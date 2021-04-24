@@ -1,4 +1,4 @@
-# Copyright 2021 The SkyWater PDK Authors
+# Copyright 2019-2021 SkyWater PDK Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,25 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: Apache 2.0
 
-name: Pull Request Back Porter
+name: Checks
 
 on:
-  pull_request_target:
-  check_suite:
-  check_run:
+  push:
+  pull_request:
 
 jobs:
 
-  Run:
+  Basic:
     runs-on: ubuntu-latest
-
     steps:
 
     - uses: crazy-max/ghaction-dump-context@v1
       name: Dump context
 
-    - uses: mithro/skywater-pdk-actions/modules-pr-backporter@main
-      env:
-        SSH_DEPLOY_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    - uses: mithro/checkout@main
+      with:
+        fetch-depth: 0
+
+    - uses: SymbiFlow/actions/checks@main
