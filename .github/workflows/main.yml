@@ -1,0 +1,23 @@
+name: CI
+
+on:
+    # Runs on pushes
+    push:
+    # Runs on Pull Requests
+    pull_request:
+    # Manual Dispatch
+    workflow_dispatch:
+
+jobs:
+  ci:
+    name: "Design Rule Check using Magic on All Cells"
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run Magic DRC
+        uses: docker://ghcr.io/donn/skywater-pdk-actions-run-drc-for-cell-gds-using-magic:latest
+        with:
+          args: >-
+            --known-bad sky130_fd_sc_hd__tapvgnd_1,sky130_fd_sc_hd__clkdlybuf4s15_1,sky130_fd_sc_hd__buf_16,sky130_fd_sc_hd__a2111oi_0,sky130_fd_sc_hd__tapvgnd2_1,sky130_fd_sc_hd__clkdlybuf4s18_1,sky130_fd_sc_hd__probe_p_8
+            --acceptable-errors-file ./.github/acceptable_errors
